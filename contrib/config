@@ -1,0 +1,3 @@
+[filechooser]
+cmd=/home/boydaihungst/.config/xdg-desktop-portal-termfilechooser/vifm-wrapper.sh
+default_dir=/home/boydaihungst/Downloads
