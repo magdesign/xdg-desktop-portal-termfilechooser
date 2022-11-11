@@ -12,7 +12,7 @@ To change default_dir, edit `$default_dir` in lf-wrapper.sh. For example: `$defa
 ```sh
 git clone -b fix-for-lf https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser.git
 ```
-## Step for step guide
+## Step by step installation
 
 [Read here](https://github.com/GermainZ/xdg-desktop-portal-termfilechooser/issues/3#issuecomment-1304607788)
 
