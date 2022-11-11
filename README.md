@@ -7,6 +7,8 @@ Based on [xdg-desktop-portal-wlr] (xpdw).
 
 ## NOTE: for [lf](https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser/tree/fix-for-lf) user. Use branch [fix-for-lf](https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser/tree/fix-for-lf)
 
+To change default_dir, edit `$default_dir` in lf-wrapper.sh. For example: `$default_dir="$HOME/Downloads"`
+
 ```sh
 git clone -b fix-for-lf https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser.git
 ```
