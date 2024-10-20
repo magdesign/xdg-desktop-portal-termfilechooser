@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -x
+
 # This wrapper script is invoked by xdg-desktop-portal-termfilechooser.
 #
 # Inputs:
@@ -24,13 +27,34 @@ directory="$2"
 save="$3"
 path="$4"
 out="$5"
-cmd="/usr/bin/vifm"
-termcmd="/usr/bin/kitty"
+cmd="vifm"
+# "wezterm start --always-new-process" if you use wezterm
+termcmd="${TERMCMD:-kitty}"
+# change this to "/tmp/xxxxxxx/.last_selected" if you only want to save last selected location
+# in session (flushed after reset device)
+last_selected_path_cfg="$HOME/.config/xdg-desktop-portal-termfilechooser/.last_selected"
+mkdir -p "$(dirname last_selected_path_cfg)"
+if [ ! -f "$last_selected_path_cfg" ]; then
+    touch "$last_selected_path_cfg"
+fi
+last_selected="$(cat "$last_selected_path_cfg")"
+
+Restore last selected path
+if [ -d "$last_selected" ]; then
+    # Save/download file
+    save_to_file=""
+    if [ "$save" = "1" ]; then
+        save_to_file="$(basename "$path")"
+        path="${last_selected}/${save_to_file}"
+    else
+        path="${last_selected}"
+    fi
+fi
 
 if [ "$save" = "1" ]; then
-	# /usr/bin/touch $path
-	set -- --choose-files "$out" -c "set statusline='Select save path (see tutorial in preview pane; try pressing <w> key if no preview)'" --select "$path"
-	printf '%s' 'xdg-desktop-portal-termfilechooser saving files tutorial
+    # Save/download file
+    set -- --choose-files "$out" -c "set statusline='Select save path (see tutorial in preview pane; try pressing <w> key if no preview)'" --select "$path"
+    printf '%s' 'xdg-desktop-portal-termfilechooser saving files tutorial
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !!!                 === WARNING! ===                 !!!
@@ -52,13 +76,29 @@ Notes:
    will be removed and the save operation aborted.
 ' >"$path"
 elif [ "$directory" = "1" ]; then
-	set -- --choose-dir "$out" -c "set statusline='Select directory (quit in dir to select it)'"
+    # upload files from a directory
+    set -- --choose-dir "$out" -c "set statusline='Select directory (quit in dir to select it)'"
 elif [ "$multiple" = "1" ]; then
-	set -- --choose-files "$out" -c "set statusline='Select file(s) (press <t> key to select multiple)'"
+    # upload multiple files
+    set -- --choose-files "$out" -c "set statusline='Select file(s) (press <t> key to select multiple)'"
 else
-	set -- --choose-files "$out" -c "set statusline='Select file (open file to select it)'"
+    # upload only 1 file
+    set -- --choose-files "$out" -c "set statusline='Select file (open file to select it)'"
 fi
 $termcmd -- $cmd "$@"
+
+# Remove file if the save operation aborted
 if [ "$save" = "1" ] && [ ! -s "$out" ]; then
-	/usr/bin/rm "$path"
+    rm "$path"
+else
+    # Save the last selected path for the next time, only download file operation is need to use this path, \
+    # the other three save last visited location automatically
+    selected_path=$(cat "$out")
+    echo "$selected_path" >~/log.txt
+    if [[ -d "$selected_path" ]]; then
+        echo "$selected_path" >"$last_selected_path_cfg"
+    elif [[ -f "$selected_path" ]]; then
+        dirname "$selected_path" >"$last_selected_path_cfg"
+    fi
 fi
+i
