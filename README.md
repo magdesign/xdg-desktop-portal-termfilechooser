@@ -1,63 +1,95 @@
 # xdg-desktop-portal-termfilechooser
 
-[xdg-desktop-portal] backend for choosing files with your favorite file
-chooser.
+[xdg-desktop-portal] backend for choosing files with your favorite file chooser.
 By default, it will use the [ranger] file manager, but this is customizable.
-Based on [xdg-desktop-portal-wlr] (xpdw).
+Based on [xdg-desktop-portal-wlr] (xdpw).
 
-## NOTE: for [lf](https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser/tree/fix-for-lf) user. Use branch [fix-for-lf](https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser/tree/fix-for-lf)
+## Installation
 
-To change default_dir, edit `$default_dir` in lf-wrapper.sh. For example: `$default_dir="$HOME/Downloads"`
+### Dependencies
 
-```sh
-git clone -b fix-for-lf https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser.git
-```
-## Step by step installation
+Install the required packages. On apt-based systems:
 
-[Read here](https://github.com/GermainZ/xdg-desktop-portal-termfilechooser/issues/3#issuecomment-1304607788)
+	sudo apt install xdg-desktop-portal build-essential ninja-build meson libinih-dev libsystemd-dev scdoc
 
-## Building
+For Arch, see the dependencies in the [AUR package](https://aur.archlinux.org/packages/xdg-desktop-portal-termfilechooser-git#pkgdeps).
 
-```sh
-meson build
-ninja -C build
-```
+### Download the source
 
-## Installing
+	git clone https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser
 
-### From Source
+### Build
 
-```sh
-ninja -C build install
-```
+	cd xdg-desktop-portal-termfilechooser
+	meson build
+	ninja -C build
+	ninja -C build install  # run with superuser privileges
+
+On Debian, move the `termfilechooser.portal` file:
+
+	sudo mv /usr/local/share/xdg-desktop-portal/portals/termfilechooser.portal /usr/share/xdg-desktop-portal/portals/
+
+### Config files
+
+Copy the `config` and any of the wrapper scripts in `contrib` dir to `~/.config/xdg-desktop-portal-termfilechooser`. Edit the files to set your preferred terminal emulator and file manager applications.
+
+### Disable the original file picker portal
+
+If your xdg-desktop-portal version
+
+	xdg-desktop-portal --version
+	# If xdg-desktop-portal not on $PATH, try:
+	/usr/libexec/xdg-desktop-portal --version
+
+is >= [`1.18.0`](https://github.com/flatpak/xdg-desktop-portal/releases/tag/1.18.0), then you can specify the portal for FileChooser in `~/.config/xdg-desktop-portal/portals.conf` file (see the [flatpak docs](https://flatpak.github.io/xdg-desktop-portal/docs/portals.conf.html) and [ArchWiki](wiki.archlinux.org/title/XDG_Desktop_Portal#Configuration)):
+
+	org.freedesktop.impl.portal.FileChooser=termfilechooser
+
+If your `xdg-desktop-portal --version` is older, you can remove `FileChooser` from `Interfaces` of the `{gtk;kde;…}.portal` files:
+
+	find /usr/share/xdg-desktop-portal/portals -name '*.portal' -not -name 'termfilechooser.portal' \
+		-exec grep -q 'FileChooser' '{}' \; \
+		-exec sudo sed -i'.bak' 's/org\.freedesktop\.impl\.portal\.FileChooser;\?//g' '{}' \;
 
 
-## Running
+### Systemd service
 
-Make sure `XDG_CURRENT_DESKTOP` is set and imported into D-Bus.
+Restart the portal service:
 
-When correctly installed, xdg-desktop-portal should automatically invoke
-xdg-desktop-portal-termfilechooser when needed.
+	systemctl --user restart xdg-desktop-portal.service
 
-For example, to use this portal with Firefox, launch Firefox as such:
-`GTK_USE_PORTAL=1 firefox`.
+### Test
 
-### Configuration
+	GTK_USE_PORTAL=1  zenity --file-selection
+
+and additional options: `--multiple`, `--directory`, `--save`.
+
+#### Troubleshooting
+
+- After editing termfilechooser's config, restart its service:
+
+		systemctl --user restart xdg-desktop-portal-termfilechooser.service
+
+- The termfilechooser's executable can also be launched directly:
+
+		systemctl --user stop xdg-desktop-portal-termfilechooser.service
+		/usr/local/libexec/xdg-desktop-portal-termfilechooser -r &
+
+	This way the output from the wrapper scripts (e.g. `ranger-wrapper.sh`) will be written to the same terminal. This is handy for using e.g. `set -x` in the scripts during debugging.
+	When termfilechooser runs as a `systemd` service, its output can be viewer with `journalctl`.
+
+- Since [this merge request in GNOME](https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/4829), `GTK_USE_PORTAL=1` seems to be replaced with `GDK_DEBUG=portals`.
+
+- See also: [Troubleshooting section in ArchWiki](wiki.archlinux.org/title/XDG_Desktop_Portal#Troubleshooting).
+
+
+## Usage
+
+Firefox has a setting in its `about:config` to always use XDG desktop portal's file chooser: set `widget.use-xdg-desktop-portal.file-picker` to `1`. See https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration.
+
+## Documentation
 
 See `man 5 xdg-desktop-portal-termfilechooser`.
-
-### Manual startup
-
-At the moment, some command line flags are available for development and
-testing. If you need to use one of these flags, you can start an instance of
-xdpw using the following command:
-
-```sh
-xdg-desktop-portal-termfilechooser -r [OPTION...]
-```
-
-To list the available options, you can run `xdg-desktop-portal-termfilechooser
---help`.
 
 ## License
 
