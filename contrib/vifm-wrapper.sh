@@ -94,7 +94,6 @@ else
     # Save the last selected path for the next time, only download file operation is need to use this path, \
     # the other three save last visited location automatically
     selected_path=$(cat "$out")
-    echo "$selected_path" >~/log.txt
     if [[ -d "$selected_path" ]]; then
         echo "$selected_path" >"$last_selected_path_cfg"
     elif [[ -f "$selected_path" ]]; then
