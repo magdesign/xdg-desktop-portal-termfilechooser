@@ -1,7 +1,7 @@
 # xdg-desktop-portal-termfilechooser
 
 [xdg-desktop-portal] backend for choosing files with your favorite file chooser.
-By default, it will use the [ranger] file manager, but this is customizable.
+By default, it will use the [yazi] file manager, but this is customizable.
 Based on [xdg-desktop-portal-wlr] (xdpw).
 
 ## Installation
