@@ -64,7 +64,20 @@ if [ "$save" = "1" ]; then
     create_save_file
     set -- -p "$out" "$path"
 else
-    env NNN_TMPFILE="$out" set -- -p "$out"
+    set -- -p "$out"
 fi
 
-$termcmd $cmd "$@"
+# data will be `cd "/dir/path"`
+NNN_TMPFILE_PATH="/tmp/xdg-desktop-portal-termfilechooser-NNN-tmpfile"
+if [[ "$directory" == "1" ]]; then
+    env NNN_TMPFILE="$NNN_TMPFILE_PATH" $termcmd -- $cmd "$@"
+else
+    $termcmd -- $cmd "$@"
+fi
+
+if [[ "$directory" == "1" ]] && [[ -n "$NNN_TMPFILE_PATH" ]]; then
+    LAST_SELECTED_DIR=$(cat "$NNN_TMPFILE_PATH")
+    # convert data from `cd "/dir/path"`  to "/dir/path"
+    LAST_SELECTED_DIR=$(echo "$LAST_SELECTED_DIR" | sed -n "s/^cd '\(.*\)'/\1/p")
+    echo "$LAST_SELECTED_DIR" >"$out"
+fi
