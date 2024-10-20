@@ -50,6 +50,10 @@ if [ -d "$last_selected" ]; then
     fi
 fi
 
+if [[ -z "$path" ]]; then
+    path="$HOME"
+fi
+
 if [ "$save" = "1" ]; then
     # Save/download file
     set -- --choosefile="$out" --cmd="echo Select save path (see tutorial in preview pane; try pressing zv or zp if no preview)" --selectfile="$path"
@@ -91,7 +95,7 @@ if [ "$save" = "1" ] && [ ! -s "$out" ]; then
     rm "$path"
 else
     # Save the last selected path for the next time, only upload files from a directory operation is need
-    selected_path=$(cat "$out")
+    selected_path=$(head -n 1 <"$out")
     if [[ -d "$selected_path" ]]; then
         echo "$selected_path" >"$last_selected_path_cfg"
     elif [[ -f "$selected_path" ]]; then

@@ -51,6 +51,10 @@ if [ -d "$last_selected" ]; then
     fi
 fi
 
+if [[ -z "$path" ]]; then
+    path="$HOME"
+fi
+
 if [ "$save" = "1" ]; then
     # Save/download file
     set -- --choose-files "$out" -c "set statusline='Select save path (see tutorial in preview pane; try pressing <w> key if no preview)'" --select "$path"
@@ -93,11 +97,10 @@ if [ "$save" = "1" ] && [ ! -s "$out" ]; then
 else
     # Save the last selected path for the next time, only download file operation is need to use this path, \
     # the other three save last visited location automatically
-    selected_path=$(cat "$out")
+    selected_path=$(head -n 1 <"$out")
     if [[ -d "$selected_path" ]]; then
         echo "$selected_path" >"$last_selected_path_cfg"
     elif [[ -f "$selected_path" ]]; then
         dirname "$selected_path" >"$last_selected_path_cfg"
     fi
 fi
-i

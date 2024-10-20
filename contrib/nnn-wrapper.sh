@@ -27,6 +27,10 @@ cmd="nnn -S -s xdg-portal-filechooser"
 # Although perhaps it could be scripted together with https://github.com/jarun/nnn/wiki/Basic-use-cases#configure-cd-on-quit
 # This missing functionality probably could be implemented with a plugin.
 
+if [[ -z "$path" ]]; then
+    path="$HOME"
+fi
+
 create_save_file() {
     cat >"$path" <<-'END'
 	xdg-desktop-portal-termfilechooser saving files tutorial
