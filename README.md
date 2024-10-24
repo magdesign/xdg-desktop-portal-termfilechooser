@@ -1,5 +1,22 @@
 # xdg-desktop-portal-termfilechooser
 
+<!--toc:start-->
+
+-   [xdg-desktop-portal-termfilechooser](#xdg-desktop-portal-termfilechooser)
+    -   [Installation](#installation)
+        -   [Dependencies](#dependencies)
+        -   [Download the source](#download-the-source)
+        -   [Build](#build)
+        -   [Config files](#config-files)
+        -   [Disable the original file picker portal](#disable-the-original-file-picker-portal)
+        -   [Systemd service](#systemd-service)
+        -   [Test](#test)
+            -   [Troubleshooting](#troubleshooting)
+    -   [Usage](#usage)
+    -   [Documentation](#documentation)
+    -   [License](#license)
+    <!--toc:end-->
+
 [xdg-desktop-portal] backend for choosing files with your favorite file chooser.
 By default, it will use the [yazi](https://github.com/sxyazi/yazi) file manager, but this is customizable.
 Based on [xdg-desktop-portal-wlr] (xdpw).
@@ -88,12 +105,12 @@ and additional options: `--multiple`, `--directory`, `--save`.
 
 -   After editing termfilechooser's config, restart its service:
 
-        systemctl --user restart xdg-desktop-portal-termfilechooser.service
+          systemctl --user restart xdg-desktop-portal-termfilechooser.service
 
 -   The termfilechooser's executable can also be launched directly:
 
-        systemctl --user stop xdg-desktop-portal-termfilechooser.service
-        /usr/local/libexec/xdg-desktop-portal-termfilechooser -r &
+          systemctl --user stop xdg-desktop-portal-termfilechooser.service
+          /usr/local/libexec/xdg-desktop-portal-termfilechooser -l TRACE -r &
 
     This way the output from the wrapper scripts (e.g. `ranger-wrapper.sh`) will be written to the same terminal. This is handy for using e.g. `set -x` in the scripts during debugging.
     When termfilechooser runs as a `systemd` service, its output can be viewer with `journalctl`.

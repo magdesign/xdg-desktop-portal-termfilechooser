@@ -32,6 +32,14 @@ static int exec_filechooser(void *data, bool writing, bool multiple, bool direct
     char *cmd = malloc(str_size);
     snprintf(cmd, str_size, "%s %d %d %d \"%s\" \"%s\"", cmd_script, multiple, directory, writing, path, PATH_PORTAL);
 
+    // Check if the portal file exists and have read write permission
+    if (access(PATH_PORTAL, R_OK | W_OK) != 0) {
+        logprint(ERROR,
+            "failed to start portal, make sure you have permission to read "
+            "and write %s",
+            PATH_PORTAL);
+        return -1;
+    }
     remove(PATH_PORTAL);
     logprint(TRACE, "executing command: %s", cmd);
     int ret = system(cmd);
