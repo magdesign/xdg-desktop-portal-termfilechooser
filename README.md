@@ -29,7 +29,7 @@ Install the required packages. On apt-based systems:
 
     sudo apt install xdg-desktop-portal build-essential ninja-build meson libinih-dev libsystemd-dev scdoc
 
-For Arch, see the dependencies in the [AUR package](https://aur.archlinux.org/packages/xdg-desktop-portal-termfilechooser-git#pkgdeps).
+For Arch, see the dependencies in the [AUR package](https://aur.archlinux.org/packages/xdg-desktop-portal-termfilechooser-fix-for-lf-git#pkgdeps).
 
 ### Download the source
 
