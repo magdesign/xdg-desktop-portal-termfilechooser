@@ -78,6 +78,9 @@ If your xdg-desktop-portal version
     xdg-desktop-portal --version
     # If xdg-desktop-portal not on $PATH, try:
     /usr/libexec/xdg-desktop-portal --version
+    # OR, if it says file not found
+    /usr/lib64/xdg-desktop-portal --version
+    
 
 is >= [`1.18.0`](https://github.com/flatpak/xdg-desktop-portal/releases/tag/1.18.0), then you can specify the portal for FileChooser in `~/.config/xdg-desktop-portal/portals.conf` file (see the [flatpak docs](https://flatpak.github.io/xdg-desktop-portal/docs/portals.conf.html) and [ArchWiki](wiki.archlinux.org/title/XDG_Desktop_Portal#Configuration)):
 
@@ -112,6 +115,12 @@ and additional options: `--multiple`, `--directory`, `--save`.
           systemctl --user stop xdg-desktop-portal-termfilechooser.service
           /usr/local/libexec/xdg-desktop-portal-termfilechooser -l TRACE -r &
 
+    or, if it says file/folder not found:
+
+          systemctl --user stop xdg-desktop-portal-termfilechooser.service
+          /usr/lib64/xdg-desktop-portal-termfilechooser -l TRACE -r &
+
+    
     This way the output from the wrapper scripts (e.g. `ranger-wrapper.sh`) will be written to the same terminal. This is handy for using e.g. `set -x` in the scripts during debugging.
     When termfilechooser runs as a `systemd` service, its output can be viewer with `journalctl`.
 
