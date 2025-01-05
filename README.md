@@ -1,5 +1,7 @@
 # xdg-desktop-portal-termfilechooser
 
+fixed to build on aarch64
+
 <!--toc:start-->
 
 -   [xdg-desktop-portal-termfilechooser](#xdg-desktop-portal-termfilechooser)
@@ -29,6 +31,10 @@ Install the required packages. On apt-based systems:
 
     sudo apt install xdg-desktop-portal build-essential ninja-build meson libinih-dev libsystemd-dev scdoc
 
+On Alpine/postmarketOS
+
+    sudo apk add meson ninja-build clang cmake pkgconfig inih-dev basu-dev scdoc
+
 For Arch, see the dependencies in the [AUR package](https://aur.archlinux.org/packages/xdg-desktop-portal-termfilechooser-fix-for-lf-git#pkgdeps).
 
 ### Download the source
@@ -41,6 +47,13 @@ For Arch, see the dependencies in the [AUR package](https://aur.archlinux.org/pa
     meson build
     ninja -C build
     ninja -C build install  # run with superuser privileges
+
+On Alpine/postmarketOS, copy the configs to the right place:
+
+    mkdir -p ~/.config/xdg-desktop-portal-termfilechooser/
+    sudo cp ~/Downloads/xdg-desktop-portal-termfilechooser/contrib/config ~/.config/xdg-desktop-portal-termfilechooser/
+    sudo cp ~/Downloads/xdg-desktop-portal-termfilechooser/contrib/yazi-wrapper.sh ~/.config/xdg-desktop-portal-termfilechooser/
+    sudo cp ~/Downloads/xdg-desktop-portal-termfilechooser/termfilechooser.portal /usr/share/xdg-desktop-portal/portals/
 
 On Debian, move the `termfilechooser.portal` file:
 
