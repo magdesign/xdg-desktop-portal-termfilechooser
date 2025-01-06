@@ -1,6 +1,6 @@
 # xdg-desktop-portal-termfilechooser
 
-fixed to build on aarch64
+fixed the build error.
 
 <!--toc:start-->
 
