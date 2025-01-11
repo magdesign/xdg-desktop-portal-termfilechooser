@@ -126,11 +126,11 @@ and additional options: `--multiple`, `--directory`, `--save`.
 
 -   Since [this merge request in GNOME](https://gitlab.gnome.org/GNOME/gtk/-/merge_requests/4829), `GTK_USE_PORTAL=1` seems to be replaced with `GDK_DEBUG=portals`.
 
--   See also: [Troubleshooting section in ArchWiki](wiki.archlinux.org/title/XDG_Desktop_Portal#Troubleshooting).
+-   See also: [Troubleshooting section in ArchWiki](https://wiki.archlinux.org/title/XDG_Desktop_Portal#Troubleshooting).
 
 ## Usage
 
-Firefox has a setting in its `about:config` to always use XDG desktop portal's file chooser: set `widget.use-xdg-desktop-portal.file-picker` to `1`. See https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration.
+Firefox has a setting in its `about:config` to always use XDG desktop portal's file chooser: set `widget.use-xdg-desktop-portal.file-picker` to `1`. See [https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration](https://wiki.archlinux.org/title/Firefox#XDG_Desktop_Portal_integration).
 
 ## Documentation
 
