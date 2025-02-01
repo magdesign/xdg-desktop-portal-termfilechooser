@@ -39,7 +39,7 @@ For Arch, see the dependencies in the [AUR package](https://aur.archlinux.org/pa
 
 ### Download the source
 
-    git clone https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser
+    git clone https://github.com/magdesign/xdg-desktop-portal-termfilechooser
 
 ### Build
 
@@ -105,6 +105,16 @@ If your `xdg-desktop-portal --version` is older, you can remove `FileChooser` fr
     	-exec grep -q 'FileChooser' '{}' \; \
     	-exec sudo sed -i'.bak' 's/org\.freedesktop\.impl\.portal\.FileChooser;\?//g' '{}' \;
 
+on postmarketOS create
+
+    ~/.config/xdg-desktop-portal/portals.conf  
+
+with content:
+
+    [FileChooser]
+    org.freedesktop.impl.portal.FileChooser=termfilechooser
+
+
 ### Systemd service
 
 Restart the portal service:
@@ -113,7 +123,7 @@ Restart the portal service:
 
 ### Test
 
-    GTK_USE_PORTAL=1  zenity --file-selection
+    GTK_USE_PORTAL=1  firefox-esr
 
 and additional options: `--multiple`, `--directory`, `--save`.
 
